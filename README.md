@@ -1,75 +1,62 @@
-<header>
+# OnlyReal
 
-<!--
-  <<< Author notes: Course header >>>
-  Include a 1280×640 image, course title in sentence case, and a concise description in emphasis.
-  In your repository settings: enable template repository, add your 1280×640 social image, auto delete head branches.
-  Add your open source license, GitHub uses MIT license.
--->
+Short vertical videos made by people. **No AI-generated videos, no AI posts, no AI ads.**
 
-# Introduction to GitHub
+OnlyReal is a mobile app (iOS and Android) built with Expo and React Native, with a Supabase backend.
+Every post is filmed in the app's own camera and verified by the server before it goes live.
+See [docs/REAL_CONTENT.md](docs/REAL_CONTENT.md) for how that works.
 
-_Get started using GitHub in less than an hour._
+## What's in the MVP
 
-</header>
+- **Feed**: full-screen vertical videos that autoplay as you swipe, with a "Real · filmed in app" badge on every post.
+- **Film**: the in-app camera (up to 60 s). There is intentionally no gallery upload.
+- **Post**: preview, caption, then the clip is fingerprinted, uploaded and verified.
+- **Profiles**: your posts, likes total, editable username, name and bio. Tap an avatar to open someone else's profile.
+- **Likes and comments**.
+- **Reports**: flag a clip as AI-generated, an AI ad, or filmed off a screen. Three flags pull it for review automatically.
+- **Sign in** with a 6-digit email code (no passwords).
 
-<!--
-  <<< Author notes: Step 1 >>>
-  Choose 3-5 steps for your course.
-  The first step is always the hardest, so pick something easy!
-  Link to docs.github.com for further explanations.
-  Encourage users to open new tabs for steps!
--->
+## Project layout
 
-## Step 1: Create a branch
+```
+app/                    Expo app
+  src/app/              screens (Expo Router)
+  src/components/       UI pieces (VideoCard, RealBadge, ...)
+  src/lib/              api, auth, Supabase client, theme
+supabase/
+  migrations/           database schema, row-level security, storage rules
+  functions/publish-capture/   edge function that verifies and publishes clips
+docs/REAL_CONTENT.md    how content is kept real, and what's next
+```
 
-_Welcome to "Introduction to GitHub"! :wave:_
+## Try it in demo mode (no backend)
 
-**What is GitHub?**: GitHub is a collaboration platform that uses _[Git](https://docs.github.com/get-started/quickstart/github-glossary#git)_ for versioning. GitHub is a popular place to share and contribute to [open-source](https://docs.github.com/get-started/quickstart/github-glossary#open-source) software.
-<br>:tv: [Video: What is GitHub?](https://www.youtube.com/watch?v=pBy1zgt0XPc)
+```bash
+cd app
+npm install
+npx expo start
+```
 
-**What is a repository?**: A _[repository](https://docs.github.com/get-started/quickstart/github-glossary#repository)_ is a project containing files and folders. A repository tracks versions of files and folders. For more information, see "[About repositories](https://docs.github.com/en/repositories/creating-and-managing-repositories/about-repositories)" from GitHub Docs.
+Scan the QR code with **Expo Go** on your phone and tap **Try the demo**. In demo mode your clips stay on the phone.
 
-**What is a branch?**: A _[branch](https://docs.github.com/en/get-started/quickstart/github-glossary#branch)_ is a parallel version of your repository. By default, your repository has one branch named `main` and it is considered to be the definitive branch. Creating additional branches allows you to copy the `main` branch of your repository and safely make any changes without disrupting the main project. Many people use branches to work on specific features without affecting any other parts of the project.
+## Connect the real backend
 
-Branches allow you to separate your work from the `main` branch. In other words, everyone's work is safe while you contribute. For more information, see "[About branches](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-branches)".
+1. Create a project at [supabase.com](https://supabase.com).
+2. Apply the schema and deploy the function with the [Supabase CLI](https://supabase.com/docs/guides/cli):
+   ```bash
+   supabase link --project-ref <your-project-ref>
+   supabase db push
+   supabase functions deploy publish-capture
+   ```
+3. In Supabase, under Authentication > Email templates, make sure the sign-in email includes the `{{ .Token }}` code.
+4. Copy `app/.env.example` to `app/.env` and fill in your project URL and anon key.
+5. Restart `npx expo start`.
 
-**What is a profile README?**: A _[profile README](https://docs.github.com/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/managing-your-profile-readme)_ is essentially an "About me" section on your GitHub profile where you can share information about yourself with the community on GitHub.com. GitHub shows your profile README at the top of your profile page. For more information, see "[Managing your profile README](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/managing-your-profile-readme)".
+Optional: to add an AI-detection provider, set `AI_DETECTION_URL`, `AI_DETECTION_KEY` and `AI_HOLD_THRESHOLD` with `supabase secrets set`.
 
-![profile-readme-example](/images/profile-readme-example.png)
+## Checks
 
-### :keyboard: Activity: Your first branch
-
-1. Open a new browser tab and navigate to your newly made repository. Then, work on the steps in your second tab while you read the instructions in this tab.
-2. Navigate to the **< > Code** tab in the header menu of your repository.
-
-   ![code-tab](/images/code-tab.png)
-
-3. Click on the **main** branch drop-down.
-
-   ![main-branch-dropdown](/images/main-branch-dropdown.png)
-
-4. In the field, name your branch `my-first-branch`. In this case, the name must be `my-first-branch` to trigger the course workflow.
-5. Click **Create branch: my-first-branch** to create your branch.
-
-   ![create-branch-button](/images/create-branch-button.png)
-
-   The branch will automatically switch to the one you have just created.
-   The **main** branch drop-down bar will reflect your new branch and display the new branch name.
-
-6. Wait about 20 seconds then refresh this page (the one you're following instructions from). [GitHub Actions](https://docs.github.com/en/actions) will automatically update to the next step.
-
-<footer>
-
-<!--
-  <<< Author notes: Footer >>>
-  Add a link to get support, GitHub status page, code of conduct, license link.
--->
-
----
-
-Get help: [Post in our discussion board](https://github.com/orgs/skills/discussions/categories/introduction-to-github) &bull; [Review the GitHub status page](https://www.githubstatus.com/)
-
-&copy; 2024 GitHub &bull; [Code of Conduct](https://www.contributor-covenant.org/version/2/1/code_of_conduct/code_of_conduct.md) &bull; [MIT License](https://gh.io/mit)
-
-</footer>
+```bash
+cd app
+npx tsc --noEmit
+```

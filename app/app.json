@@ -1,0 +1,43 @@
+{
+  "expo": {
+    "name": "OnlyReal",
+    "slug": "onlyreal",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "app.onlyreal"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#14120F",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "package": "app.onlyreal"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "OnlyReal films every post in the app so viewers know it is real.",
+          "microphonePermission": "OnlyReal records sound with your videos.",
+          "recordAudioAndroid": true
+        }
+      ],
+      "expo-video"
+    ],
+    "scheme": "onlyreal",
+    "experiments": {
+      "typedRoutes": false
+    }
+  }
+}
